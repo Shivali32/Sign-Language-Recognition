@@ -9,7 +9,7 @@ This repository provides an end-to-end system for recognizing and interpreting s
 - **Model Training**: Train machine learning models to recognize sign language gestures.
 - **Inference**: Use trained models to interpret sign language in real-time.
 
-## Tech Stack
+## Technologies
 - **Programming Language**: Python (>=3.6)
 - **Libraries**: OpenCV, TensorFlow, NumPy
 - **Machine Learning**: Deep learning models for gesture recognition
