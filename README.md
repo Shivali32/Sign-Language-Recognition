@@ -17,12 +17,16 @@ This repository provides an end-to-end system for recognizing and interpreting s
 
 ## Installation
 1. Clone the repository: 
-``` git clone https://github.com/your-username/sign-language-recognition.git ```
-``` cd sign-language-recognition ```
-2. Install dependencies: 
-``` pip install -r requirements.txt ```
+``` bash
+git clone https://github.com/your-username/sign-language-recognition.git
+cd sign-language-recognition
+```
+3. Install dependencies: 
+```bash
+pip install -r requirements.txt
+```
 
-3.  Set up environment variables:
+5.  Set up environment variables:
 Create a `.env` file in the root directory and add necessary configurations.
 
 ## Usage
