@@ -1,12 +1,13 @@
 from pickle import FALSE, TRUE
 from flask import Flask,render_template,Response,request
 import cv2
+import sys
 import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import csv
 import copy
 import mediapipe as mp
 import numpy as np
-from keras.models import load_model
 from app_files.main.draw import draw_info_text_word
 from model import KeyPointClassifier
 from app_files import calc_landmark_list, draw_info_text, draw_info_text_word, draw_landmarks, get_args, pre_process_landmark
@@ -31,16 +32,23 @@ global cvVariable
 cvVariable=""
 
 def generate_frames():
-    camera=cv2.VideoCapture(0)
-    args = get_args()
+   
+    
+    use_static_image_mode = os.getenv('USE_STATIC_IMAGE_MODE', 'False').lower() in ['true', '1', 't', 'y', 'yes']
 
-    cap_device = args.device
-    cap_width = args.width
-    cap_height = args.height
+  
+    device = os.getenv('DEVICE', '/dev/video0')
+    camera=cv2.VideoCapture(device)
+    if not camera.isOpened():
+        print("Cannot open camera")
+        exit()
 
-    use_static_image_mode = args.use_static_image_mode
-    min_detection_confidence = args.min_detection_confidence
-    min_tracking_confidence = args.min_tracking_confidence
+    else:
+        print("camera opened")
+    cap_width = int(os.getenv('WIDTH', 640))
+    cap_height = int(os.getenv('HEIGHT', 480))
+    min_detection_confidence = float(os.getenv('MIN_DETECTION_CONFIDENCE', 0.5))
+    min_tracking_confidence = float(os.getenv('MIN_TRACKING_CONFIDENCE', 0.5))
 
     cap = camera
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, cap_width)
@@ -99,6 +107,7 @@ def generate_frames():
                     getGlobalVariable())
         ret,buffer=cv2.imencode('.jpg',debug_image)
         debug_image=buffer.tobytes()
+        print("printing")
         yield(b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + debug_image + b'\r\n')
     del(camera)
@@ -153,15 +162,22 @@ def extract_keypoints(results):
 def generate_frames_for_create():
 
     camera=cv2.VideoCapture(0)
-    args = get_args()
+    use_static_image_mode = os.getenv('USE_STATIC_IMAGE_MODE', 'False').lower() in ['true', '1', 't', 'y', 'yes']
 
-    cap_device = args.device
-    cap_width = args.width
-    cap_height = args.height
+  
+    device = os.getenv('DEVICE', '/dev/video0')
+    camera=cv2.VideoCapture(device)
+    if not camera.isOpened():
+        print("Cannot open camera")
+        exit()
 
-    use_static_image_mode = args.use_static_image_mode
-    min_detection_confidence = args.min_detection_confidence
-    min_tracking_confidence = args.min_tracking_confidence
+    else:
+        print("camera opened")
+    cap_width = int(os.getenv('WIDTH', 640))
+    cap_height = int(os.getenv('HEIGHT', 480))
+    min_detection_confidence = float(os.getenv('MIN_DETECTION_CONFIDENCE', 0.5))
+    min_tracking_confidence = float(os.getenv('MIN_TRACKING_CONFIDENCE', 0.5))
+
 
     cap = camera
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, cap_width)
@@ -304,4 +320,3 @@ def createGesture():
 
 if __name__=="__main__":
     app.run(debug=True)
-
