@@ -21,12 +21,12 @@ This repository provides an end-to-end system for recognizing and interpreting s
 git clone https://github.com/your-username/sign-language-recognition.git
 cd sign-language-recognition
 ```
-3. Install dependencies: 
+2. Install dependencies: 
 ```bash
 pip install -r requirements.txt
 ```
 
-5.  Set up environment variables:
+3.  Set up environment variables:
 Create a `.env` file in the root directory and add necessary configurations.
 
 ## Usage
